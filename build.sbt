@@ -8,11 +8,9 @@ resolvers += Resolver.sonatypeRepo("snapshots")
 libraryDependencies ++= Seq(
   "ch.qos.logback" % "logback-classic" % "0.9.29"
   ,"ch.qos.logback" % "logback-core" % "0.9.29"
-  ,"org.json4s" % "json4s-ast_2.12" % "3.5.2"
-  ,"org.json4s" % "json4s-native_2.12" % "3.5.2"
-  ,"org.apache.commons" % "commons-csv" % "1.4"
+  , "net.ruippeixotog" % "scala-scraper_2.12" % "2.0.0"
   ,"com.github.sanskrit-coders" % "indic-transliteration_2.12" % "1.9"
-  ,"com.github.sanskrit-coders" % "StarDict" % "1.1"
+  ,"com.github.sanskrit-coders" % "dict-tools_2.12" % "0.1"
   //    ,"com.github.sanskrit-coders" % "sanskrit-lttoolbox" % "0.1"
   //  ,"com.github.sanskrit-coders" % "db-interface" % "1.8"
 )
