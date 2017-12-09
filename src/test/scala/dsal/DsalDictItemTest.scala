@@ -18,6 +18,7 @@ class DsalDictItemTest extends FlatSpec {
     assert(item.headwords.nonEmpty)
     assert(item.headwords.head == "अकर्मक")
     assert(item.entry.contains("intransitive"))
+    assert(!item.entry.contains("Next entry"))
   }
 
 }

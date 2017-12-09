@@ -3,9 +3,8 @@ package sanskritCoders.dsal
 import java.io.{File, FileWriter, PrintWriter, StringWriter}
 
 import me.tongfei.progressbar.ProgressBar
-import org.slf4j.LoggerFactory
 import net.ruippeixotog.scalascraper.browser.JsoupBrowser
-import net.ruippeixotog.scalascraper.scraper.ContentExtractors.elementList
+import org.slf4j.LoggerFactory
 
 object scraper {
   private val log = LoggerFactory.getLogger(getClass.getName)
@@ -31,7 +30,7 @@ object scraper {
     progressBar.start()
     try{
       dict.foreach(item => {
-        if (!item.headwords.isEmpty) {
+        if (item.headwords.nonEmpty) {
           val headersLine = item.headwords.mkString("|")
           val meaningLine = item.getMeaningLine
           destination.println(headersLine)

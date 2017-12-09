@@ -1,12 +1,8 @@
 package sanskritCoders.dsal
 
-import java.io.{File, FileWriter, PrintWriter, StringWriter}
-
-import me.tongfei.progressbar.ProgressBar
 import net.ruippeixotog.scalascraper.browser.JsoupBrowser
 import org.jsoup.nodes.Element
-import org.slf4j.LoggerFactory
-import sanskritCoders.dsal.scraper.getClass
+import org.slf4j.{Logger, LoggerFactory}
 
 class DsalDictionaryIterator[ItemType <: DsalDictItem](name: String, browser: JsoupBrowser) extends Iterator[DsalDictItem] {
 // Scrape links to entries, as in:
@@ -46,11 +42,11 @@ class DsalDictionaryIterator[ItemType <: DsalDictItem](name: String, browser: Js
 }
 
 class DsalDictItem() {
-  protected val log = LoggerFactory.getLogger(getClass.getName)
+  protected val log: Logger = LoggerFactory.getLogger(getClass.getName)
   var headwords: Seq[String] = Seq()
   var entry: String = _
 
-  def fromUrl(url: String, browser: JsoupBrowser, pageTitle: Option[String] = None) = {
+  def fromUrl(url: String, browser: JsoupBrowser, pageTitle: Option[String] = None): Unit = {
     val doc = browser.get(url = url)
     //  log.debug(doc.body.text)
     headwords = pageTitle.map(Seq(_)).getOrElse(Seq())
@@ -63,14 +59,14 @@ class DsalDictItem() {
 }
 
 class BernstenDictItem extends DsalDictItem {
-  override def fromUrl(url: String, browser: JsoupBrowser, pageTitle: Option[String] = None) = {
+  override def fromUrl(url: String, browser: JsoupBrowser, pageTitle: Option[String] = None): Unit = {
     val doc = browser.get(url = url)
     //  log.debug(doc.body.text)
     val div2Elements = doc.underlying.getElementsByTag("div2")
     if (div2Elements.size() > 1) {
       log.warn(s"Skipping multi-item page titled ${pageTitle.getOrElse("UNK")} at $url")
     } else {
-      val article = Option(div2Elements.first())
+      val article = Option(div2Elements.first()).map(_.getElementsByTag("p").first())
       // <hw><d>अलग</d></hw>
 
       headwords = article.map(element => {
