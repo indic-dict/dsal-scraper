@@ -11,6 +11,7 @@ libraryDependencies ++= Seq(
   , "net.ruippeixotog" % "scala-scraper_2.12" % "2.0.0"
   ,"com.github.sanskrit-coders" % "indic-transliteration_2.12" % "1.9"
   ,"com.github.sanskrit-coders" % "dict-tools_2.12" % "0.1"
+  , "me.tongfei" % "progressbar" % "0.5.5"
   //    ,"com.github.sanskrit-coders" % "sanskrit-lttoolbox" % "0.1"
   //  ,"com.github.sanskrit-coders" % "db-interface" % "1.8"
 )

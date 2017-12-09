@@ -6,7 +6,9 @@ import net.ruippeixotog.scalascraper.scraper.ContentExtractors.elementList
 
 object scraper {
   private val log = LoggerFactory.getLogger(getClass.getName)
-  private val languageToPath = Map{("marathi", "english") -> "/home/vvasuki/stardict-marathi/ma-head/"}
+  private val languageToPath = Map{
+    ("marathi", "english") -> "/home/vvasuki/stardict-marathi/ma-head/"
+  }
   private val dictsToLanguagePair = Map{
     "berntsen" -> ("marathi", "english")
   }

@@ -2,6 +2,7 @@ package sanskritCoders.dsal
 
 import java.io.{File, PrintWriter}
 
+import me.tongfei.progressbar.ProgressBar
 import net.ruippeixotog.scalascraper.browser.JsoupBrowser
 import org.jsoup.nodes.Element
 import org.slf4j.LoggerFactory
@@ -22,13 +23,18 @@ class DsalDictionary(name: String, browser: JsoupBrowser) {
 
   def setItems(): Unit = {
     val doc = browser.get(url = indexPage)
+    log.info(s"Read $indexPage")
     val itemPElements = doc.underlying.getElementsByTag("p").toArray().map(_.asInstanceOf[Element])
-    log.info(s"Checking about ${itemPElements.length} items")
+    log.info(s"Checking about ${itemPElements.length} items.")
+    val progressBar = new ProgressBar("itemsPb", itemPElements.length)
+    progressBar.start()
     items = itemPElements.zipWithIndex.map{case (pElement: Element, index: Int) => {
       val url =  "http://dsalsrv02.uchicago.edu/" +  pElement.getElementsByAttribute("href").first().attr("href")
-      log.debug(s"Getting $index out of ${itemPElements.length}.")
+//      log.debug(s"Getting $index out of ${itemPElements.length}.")
+      progressBar.step()
       new DsalDictItem(url=url, browser = browser)
     }}.filterNot(_.headwords.isEmpty)
+    progressBar.stop()
     log.info(s"Got ${items.length} items!")
   }
 
