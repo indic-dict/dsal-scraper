@@ -1,11 +1,11 @@
 package dsal
 
 import net.ruippeixotog.scalascraper.browser.JsoupBrowser
-import sanskritCoders.dsal.{DsalDictItem, DsalDictionaryIterator}
-import org.scalatest.{Assertion, FlatSpec}
-import org.slf4j.LoggerFactory
 import org.json4s._
 import org.json4s.native.Serialization
+import org.scalatest.{Assertion, FlatSpec}
+import org.slf4j.LoggerFactory
+import sanskritCoders.dsal.items.DsalDictItem
 
 import scala.io.Source
 

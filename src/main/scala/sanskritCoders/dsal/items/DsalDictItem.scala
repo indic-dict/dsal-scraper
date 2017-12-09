@@ -1,9 +1,9 @@
-package sanskritCoders.dsal
+package sanskritCoders.dsal.items
 
 import net.ruippeixotog.scalascraper.browser.JsoupBrowser
 import org.jsoup.nodes.Element
 import org.slf4j.{Logger, LoggerFactory}
-import sanskritCoders.dsal.marathi.{BernstenDictItem, DateDictItem}
+import sanskritCoders.dsal.items.marathi.{BernstenDictItem, DateDictItem}
 
 class DsalDictItem() {
   protected val log: Logger = LoggerFactory.getLogger(getClass.getName)

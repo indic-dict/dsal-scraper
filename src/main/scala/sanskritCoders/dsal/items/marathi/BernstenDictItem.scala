@@ -1,8 +1,8 @@
-package sanskritCoders.dsal.marathi
+package sanskritCoders.dsal.items.marathi
 
 import net.ruippeixotog.scalascraper.browser.JsoupBrowser
 import org.jsoup.nodes.Element
-import sanskritCoders.dsal.DsalDictItem
+import sanskritCoders.dsal.items.DsalDictItem
 
 class BernstenDictItem extends DsalDictItem {
   override def fromUrl(url: String, browser: JsoupBrowser, pageTitle: Option[String] = None): Unit = {

@@ -5,6 +5,7 @@ import java.io.{File, FileWriter, PrintWriter, StringWriter}
 import me.tongfei.progressbar.ProgressBar
 import net.ruippeixotog.scalascraper.browser.JsoupBrowser
 import org.slf4j.LoggerFactory
+import sanskritCoders.dsal.items.DsalPLinkedDictItemIterator
 
 object scraper {
   private val log = LoggerFactory.getLogger(getClass.getName)
@@ -19,7 +20,7 @@ object scraper {
 
   private def dumpDict(name: String, nextItemIndexIn: Int  = 0): Unit = {
     val browser: JsoupBrowser = JsoupBrowser.typed()
-    val dict = new DsalDictionaryIterator(name=name, browser = browser)
+    val dict = new DsalPLinkedDictItemIterator(name=name, browser = browser)
     val outfilePath = languageToPath(dictsToLanguagePair(name))
 //    dict.setItems(limit = Some(5))
     val outfileStr = s"$outfilePath/$name/$name.babylon"
