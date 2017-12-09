@@ -9,10 +9,12 @@ import org.slf4j.LoggerFactory
 object scraper {
   private val log = LoggerFactory.getLogger(getClass.getName)
   private val languageToPath = Map{
-    ("marathi", "english") -> "/home/vvasuki/stardict-marathi/ma-head/"
+    ("marathi", "english") -> "/home/vvasuki/stardict-marathi/ma-head/other-entries/"
+    ("marathi", "marathi") -> "/home/vvasuki/stardict-marathi/ma-head/ma-entries/"
   }
   private val dictsToLanguagePair = Map{
     "berntsen" -> ("marathi", "english")
+    "date" -> ("marathi", "marathi")
   }
 
   private def dumpDict(name: String, nextItemIndexIn: Int  = 0): Unit = {
@@ -57,6 +59,6 @@ object scraper {
   }
 
   def main(args: Array[String]): Unit = {
-    dumpDict(name = "berntsen")
+    dumpDict(name = "date")
   }
 }
