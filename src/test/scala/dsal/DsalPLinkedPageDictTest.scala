@@ -20,7 +20,7 @@ class DsalPLinkedPageDictTest  extends FlatSpec {
 
   def testPageListParse(name: String, testSpec : DictPageListTestCase): Unit = {
     val dict = new DsalPLinkedPageDict(name = name, browser = browser)
-    val pages = dict.getPages()
+    val pages = dict.getPages
     assert(pages.length == testSpec.pageLength)
     val items = dict.getItems(pageUrl = testSpec.samplePage.url)
     assert(items.length == testSpec.samplePage.numItems)

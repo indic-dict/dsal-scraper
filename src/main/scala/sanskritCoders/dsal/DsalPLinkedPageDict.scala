@@ -1,5 +1,8 @@
 package sanskritCoders.dsal
 
+import java.io.{File, FileWriter, PrintWriter, StringWriter}
+
+import me.tongfei.progressbar.ProgressBar
 import net.ruippeixotog.scalascraper.browser.JsoupBrowser
 import org.jsoup.nodes.Element
 import org.slf4j.LoggerFactory
@@ -9,7 +12,7 @@ import sanskritCoders.dsal.items.DsalDictItem
 class DsalPLinkedPageDict(name: String, browser: JsoupBrowser) {
   private val log = LoggerFactory.getLogger(getClass.getName)
 
-  def getPages(): Seq[String] = {
+  def getPages: Seq[String] = {
     // Scrape links to entries, as in:
     //  http://dsalsrv02.uchicago.edu/cgi-bin/philologic/search3advanced?dbname=burrow&searchdomain=headwords&display=utf8
 
@@ -43,6 +46,43 @@ class DsalPLinkedPageDict(name: String, browser: JsoupBrowser) {
       item.fromPageElement(element)
       item
     })
+  }
+
+  def dump(outfileStr:String, nextPageIndexIn: Int  = 0) = {
+    val outFileObj = new File(outfileStr)
+    outFileObj.getParentFile.mkdirs()
+    val destination = new PrintWriter(new FileWriter(outFileObj, nextPageIndexIn > 0))
+    var nextPageIndex = nextPageIndexIn
+    val pages = getPages.take(nextPageIndex)
+    val progressBar = new ProgressBar("itemsPb", pages.length)
+    progressBar.start()
+    try{
+      pages.map(getItems).flatten.foreach(item => {
+        if (item.headwords.nonEmpty) {
+          val headersLine = item.headwords.mkString("|")
+          val meaningLine = item.getMeaningLine
+          destination.println(headersLine)
+          destination.println(meaningLine)
+          destination.println("")
+        }
+        nextPageIndex = nextPageIndex + 1
+        progressBar.step()
+      })
+    } catch {
+      case ex: Exception => {
+        val sw = new StringWriter
+        ex.printStackTrace(new PrintWriter(sw))
+        log.error("")
+        log.error(sw.toString)
+        log.error(s"nextPageIndex should be ${nextPageIndex}")
+      }
+    }
+    finally {
+      destination.close()
+      progressBar.stop()
+      log.info(s"Done writing ${nextPageIndex} pages!")
+    }
+
   }
 }
 

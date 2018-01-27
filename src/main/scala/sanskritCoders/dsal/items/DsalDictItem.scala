@@ -19,7 +19,7 @@ case class DsalDictItem(var headwords: Seq[String] = Seq(), var entry: String = 
     entry = article.map(_.text()).getOrElse("")
   }
 
-  def fromPageElement(element: Element) = {
+  def fromPageElement(element: Element): Unit = {
     /*
     <div2 type="article" id="अ_a">
 <span class="head"><span class="hi">अ a</span></span>
@@ -28,10 +28,11 @@ case class DsalDictItem(var headwords: Seq[String] = Seq(), var entry: String = 
 </div2>
      */
     headwords = Seq(element.attr("id").split("_").toList.head)
-    entry = element.toString().replaceAll("<[^>]+>", "")
+    entry = element.text()
 //    entry = element.textNodes().asScala.map(_.text()).mkString(" ")
-    log.debug(element.textNodes().toString)
-    log.debug(element.toString)
+//    log.debug(element.textNodes().toString)
+//    log.debug(element.toString)
+//    log.debug(entry)
 //    System.exit(1)
   }
 

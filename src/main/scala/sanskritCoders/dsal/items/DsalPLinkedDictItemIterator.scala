@@ -1,8 +1,12 @@
 package sanskritCoders.dsal.items
 
+import java.io.{File, FileWriter, PrintWriter, StringWriter}
+
+import me.tongfei.progressbar.ProgressBar
 import net.ruippeixotog.scalascraper.browser.JsoupBrowser
 import org.jsoup.nodes.Element
 import org.slf4j.LoggerFactory
+import sanskritCoders.dsal.scraper.log
 
 
 class DsalPLinkedDictItemIterator(name: String, browser: JsoupBrowser) extends Iterator[DsalDictItem] {
@@ -36,6 +40,44 @@ class DsalPLinkedDictItemIterator(name: String, browser: JsoupBrowser) extends I
     item.fromUrl(url=url, browser = browser, pageTitle = Some(pElement.text()))
     item
   }
+
+  def dump(outfileStr:String, nextItemIndexIn: Int  = 0): Unit = {
+    val outFileObj = new File(outfileStr)
+    outFileObj.getParentFile.mkdirs()
+    val destination = new PrintWriter(new FileWriter(outFileObj, nextItemIndexIn > 0))
+    var nextItemIndex = nextItemIndexIn
+    this.take(nextItemIndex)
+    val progressBar = new ProgressBar("itemsPb", this.likelySize)
+    progressBar.start()
+    try{
+      this.foreach(item => {
+        if (item.headwords.nonEmpty) {
+          val headersLine = item.headwords.mkString("|")
+          val meaningLine = item.getMeaningLine
+          destination.println(headersLine)
+          destination.println(meaningLine)
+          destination.println("")
+        }
+        nextItemIndex = nextItemIndex + 1
+        progressBar.step()
+      })
+    } catch {
+      case ex: Exception => {
+        val sw = new StringWriter
+        ex.printStackTrace(new PrintWriter(sw))
+        log.error("")
+        log.error(sw.toString)
+        log.error(s"nextItemIndex should be ${nextItemIndex}")
+      }
+    }
+    finally {
+      destination.close()
+      progressBar.stop()
+      log.info(s"Done writing ${nextItemIndex} items!")
+    }
+
+  }
+
 }
 
 

@@ -12,7 +12,7 @@ object scraper {
   private val languageToPath = Map{
     ("marathi", "english") -> "/home/vvasuki/stardict-marathi/ma-head/other-entries/"
     ("marathi", "marathi") -> "/home/vvasuki/stardict-marathi/ma-head/ma-entries/"
-    ("nepali", "english") -> "/home/vvasuki/stardict-marathi/ne-head/en-entries/"
+    ("nepali", "english") -> "/home/vvasuki/stardict-nepali/ne-head/en-entries/"
   }
   private val dictsToLanguagePair = Map{
     "berntsen" -> ("marathi", "english")
@@ -23,48 +23,17 @@ object scraper {
 
   private def dumpDictWithPLinkedIndex(name: String, nextItemIndexIn: Int  = 0): Unit = {
     val browser: JsoupBrowser = JsoupBrowser.typed()
-    val dict = new DsalPLinkedDictItemIterator(name=name, browser = browser)
     val outfilePath = languageToPath(dictsToLanguagePair(name))
 //    dict.setItems(limit = Some(5))
     val outfileStr = s"$outfilePath/$name/$name.babylon"
-    val outFileObj = new File(outfileStr)
-    outFileObj.getParentFile.mkdirs()
-    val destination = new PrintWriter(new FileWriter(outFileObj, nextItemIndexIn > 0))
-    var nextItemIndex = nextItemIndexIn
-    dict.take(nextItemIndex)
-    val progressBar = new ProgressBar("itemsPb", dict.likelySize)
-    progressBar.start()
-    try{
-      dict.foreach(item => {
-        if (item.headwords.nonEmpty) {
-          val headersLine = item.headwords.mkString("|")
-          val meaningLine = item.getMeaningLine
-          destination.println(headersLine)
-          destination.println(meaningLine)
-          destination.println("")
-        }
-        nextItemIndex = nextItemIndex + 1
-        progressBar.step()
-      })
-    } catch {
-      case ex: Exception => {
-        val sw = new StringWriter
-        ex.printStackTrace(new PrintWriter(sw))
-        log.error("")
-        log.error(sw.toString)
-        log.error(s"nextItemIndex should be ${nextItemIndex}")
-      }
-    }
-    finally {
-      destination.close()
-      progressBar.stop()
-      log.info(s"Done writing ${nextItemIndex} items!")
-    }
+    val dict = new DsalPLinkedPageDict(name=name, browser = browser)
+    dict.dump(outfileStr = outfileStr)
   }
 
   // TODO: Parse pages like http://dsalsrv02.uchicago.edu/cgi-bin/app/schmidt_query.py?display=utf8def&page=2
 
   def main(args: Array[String]): Unit = {
-//    dumpDictWithPLinkedIndex(name = "date")
+    //    dumpDictWithPLinkedIndex(name = "date")
+        dumpDictWithPLinkedIndex(name = "turner")
   }
 }
