@@ -12,13 +12,16 @@ object scraper {
   private val languageToPath = Map{
     ("marathi", "english") -> "/home/vvasuki/stardict-marathi/ma-head/other-entries/"
     ("marathi", "marathi") -> "/home/vvasuki/stardict-marathi/ma-head/ma-entries/"
+    ("nepali", "english") -> "/home/vvasuki/stardict-marathi/ne-head/en-entries/"
   }
   private val dictsToLanguagePair = Map{
     "berntsen" -> ("marathi", "english")
     "date" -> ("marathi", "marathi")
+    "schmidt" -> ("nepali", "english")
+    "turner" -> ("nepali", "english")
   }
 
-  private def dumpDict(name: String, nextItemIndexIn: Int  = 0): Unit = {
+  private def dumpDictWithPLinkedIndex(name: String, nextItemIndexIn: Int  = 0): Unit = {
     val browser: JsoupBrowser = JsoupBrowser.typed()
     val dict = new DsalPLinkedDictItemIterator(name=name, browser = browser)
     val outfilePath = languageToPath(dictsToLanguagePair(name))
@@ -59,7 +62,9 @@ object scraper {
     }
   }
 
+  // TODO: Parse pages like http://dsalsrv02.uchicago.edu/cgi-bin/app/schmidt_query.py?display=utf8def&page=2
+
   def main(args: Array[String]): Unit = {
-    dumpDict(name = "date")
+//    dumpDictWithPLinkedIndex(name = "date")
   }
 }

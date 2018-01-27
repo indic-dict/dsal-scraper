@@ -1,0 +1,13 @@
+{
+  "turner": {
+    "pageLength": 654,
+    "samplePage": {
+      "url": "http://dsalsrv02.uchicago.edu/cgi-bin/philologic/getobject.pl?c.0:1.turner",
+      "numItems": 8893,
+      "sampleItem": {
+        "headwords": ["अ"],
+        "entry": "अ aÂ¹, the first letter of the alphabet. It is sometimes written for ā, particularly in interior syllables; in initial syllables ā is sometimes written for a."
+      }
+    }
+  }
+}
