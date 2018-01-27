@@ -12,7 +12,7 @@ import scala.collection.JavaConverters._
 case class DsalDictItem(var headwords: Seq[String] = Seq(), var entry: String = "") {
   protected val log: Logger = LoggerFactory.getLogger(getClass.getName)
 
-  def dump(destination: PrintWriter) = {
+  def dump(destination: PrintWriter): Unit = {
     if (this.headwords.nonEmpty) {
       val headersLine = this.headwords.mkString("|")
       val meaningLine = this.getMeaningLine
@@ -32,7 +32,7 @@ case class DsalDictItem(var headwords: Seq[String] = Seq(), var entry: String = 
     entry = article.map(_.text()).getOrElse("")
   }
 
-  def fromPageElement(element: Element): Unit = {
+  def fromDiv2Element(element: Element): Unit = {
     /*
     <div2 type="article" id="अ_a">
 <span class="head"><span class="hi">अ a</span></span>
@@ -48,6 +48,15 @@ case class DsalDictItem(var headwords: Seq[String] = Seq(), var entry: String = 
 //    log.debug(entry)
 //    System.exit(1)
   }
+
+  def fromDiv1Element(elementIn: Element): Unit = {
+    val element = elementIn.clone()
+    headwords = Seq(element.getElementsByAttributeValue("class", "head").text())
+    val div1Children = element.children().asScala.filter(child => child.tagName() == "div1")
+    div1Children.foreach(_.remove())
+    entry = element.text()
+  }
+
 
   def getMeaningLine: String = entry.replace("\n", "<BR>")
 }
