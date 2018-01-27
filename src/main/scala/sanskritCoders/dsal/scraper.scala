@@ -32,7 +32,8 @@ object scraper {
   // TODO: Parse pages like http://dsalsrv02.uchicago.edu/cgi-bin/app/schmidt_query.py?display=utf8def&page=2
 
   def main(args: Array[String]): Unit = {
-        dumpDictWithPLinkedIndex(name = "date")
-//        dumpDictWithPLinkedIndex(name = "turner")
+//        dumpDictWithPLinkedIndex(name = "date")
+//    dumpDictWithPLinkedIndex(name = "turner")
+        dumpDictWithPLinkedIndex(name = "bahri")
   }
 }

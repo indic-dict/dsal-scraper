@@ -51,7 +51,7 @@ case class DsalDictItem(var headwords: Seq[String] = Seq(), var entry: String = 
 
   def fromDiv1Element(elementIn: Element): Unit = {
     val element = elementIn.clone()
-    headwords = Seq(element.getElementsByAttributeValue("class", "head").text())
+    headwords = Seq(element.getElementsByAttributeValue("class", "head").asScala.head.text())
     val div1Children = element.children().asScala.filter(child => child.tagName() == "div1")
     div1Children.foreach(_.remove())
     entry = element.text()

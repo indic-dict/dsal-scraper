@@ -2,11 +2,12 @@ package sanskritCoders.dsal
 
 import java.io.{File, FileWriter, PrintWriter, StringWriter}
 
-import me.tongfei.progressbar.ProgressBar
 import net.ruippeixotog.scalascraper.browser.JsoupBrowser
+import org.jsoup.Jsoup
 import org.jsoup.nodes.Element
 import org.slf4j.LoggerFactory
-import sanskritCoders.dsal.DsalPDotPageIndexDict.{getClass, log}
+
+import scala.collection.JavaConverters._
 import sanskritCoders.dsal.items.DsalDictItem
 
 abstract class DsalPDotPageIndexDict(name: String, browser: JsoupBrowser) {
@@ -35,13 +36,10 @@ abstract class DsalPDotPageIndexDict(name: String, browser: JsoupBrowser) {
     val destination = new PrintWriter(new FileWriter(outFileObj, nextPageIndexIn > 0))
     var nextPageIndex = nextPageIndexIn
     val pages = getPages.drop(nextPageIndex-1)
-    val progressBar = new ProgressBar("itemsPb", pages.length)
-    progressBar.start()
     try{
       pages.map(getItems).foreach(items => {
         items.foreach(_.dump(destination = destination))
         nextPageIndex = nextPageIndex + 1
-        progressBar.step()
       })
     } catch {
       case ex: Exception => {
@@ -54,7 +52,6 @@ abstract class DsalPDotPageIndexDict(name: String, browser: JsoupBrowser) {
     }
     finally {
       destination.close()
-      progressBar.stop()
       log.info(s"Done writing ${nextPageIndex} pages!")
     }
 
@@ -110,16 +107,12 @@ class DsalPDotPageIndexDictWithHwSiblingItems(name: String, browser: JsoupBrowse
   override def getItems(pageUrl: String): Seq[DsalDictItem] = {
     val doc = browser.get(url = pageUrl)
     log.info(s"Read $pageUrl")
-    val itemElements = doc.underlying.getElementsByTag("hw").toArray().map(_.asInstanceOf[Element])
+    val itemElements = doc.underlying.html().split("<br>").tail.map(x => {Jsoup.parse(x)})
     itemElements.map(element => {
-      var definitionElements = Seq[Element]()
-      var nextSibling = element.nextElementSibling()
-      while (!Seq("hw", "table").contains(nextSibling.tagName())) {
-        definitionElements = definitionElements :+ nextSibling
-        nextSibling = element.nextElementSibling()
-      }
-      val headwords = Seq(element.text())
-      val entry = definitionElements.map(_.text()).mkString(" ")
+      val headwords = Seq(element.getElementsByAttributeValue("class", "head").asScala.head.text())
+      element.getElementsByTag("table").asScala.foreach(_.remove())
+      element.getElementsByTag("div").asScala.foreach(_.remove())
+      val entry = element.text()
       val item = new DsalDictItem(headwords = headwords, entry = entry)
       item
     })
@@ -132,5 +125,6 @@ object DsalPDotPageIndexDict {
   def getNewDict(name: String): DsalPDotPageIndexDict = name match {
     case "turner" => new DsalPDotPageIndexDictWithDiv2Items(name = name, browser = browser)
     case "date" => new DsalPDotPageIndexDictWithDiv1Items(name = name, browser = browser)
+    case "bahri" => new DsalPDotPageIndexDictWithHwSiblingItems(name = name, browser = browser)
   }
 }
