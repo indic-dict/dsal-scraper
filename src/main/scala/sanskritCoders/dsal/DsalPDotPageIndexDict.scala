@@ -3,7 +3,7 @@ package sanskritCoders.dsal
 import java.io.{File, FileWriter, PrintWriter, StringWriter}
 
 import net.ruippeixotog.scalascraper.browser.JsoupBrowser
-import org.jsoup.Jsoup
+import org.jsoup.{Connection, Jsoup}
 import org.jsoup.nodes.Element
 import org.slf4j.LoggerFactory
 
@@ -19,8 +19,8 @@ abstract class DsalPDotPageIndexDict(name: String, browser: JsoupBrowser) {
 
     val indexPage = s"http://dsalsrv02.uchicago.edu/cgi-bin/philologic/search3advanced?dbname=$name&searchdomain=headwords&display=utf8"
 
+    log.info(s"Reading $indexPage")
     val doc = browser.get(url = indexPage)
-    log.info(s"Read $indexPage")
     val itemPageElements = doc.underlying.getElementsByAttributeValueContaining("href", "?p.").toArray().map(_.asInstanceOf[Element])
     val itemPageUrls = itemPageElements.map("http://dsalsrv02.uchicago.edu" + _.attr("href")).distinct
     val likelySize: Int = itemPageUrls.length
@@ -138,12 +138,18 @@ class DsalPDotPageIndexDictWithDiv1SeparatedItems(name: String, browser: JsoupBr
 }
 
 object DsalPDotPageIndexDict {
-  val browser: JsoupBrowser = JsoupBrowser.typed()
+  val browser: JsoupBrowser = new JsoupBrowser() {
+    override def defaultRequestSettings(conn: Connection): Connection = {
+      super.defaultRequestSettings(conn).timeout(5 * 60 * 1000 /* 5 min*/)
+    }
+  }
   private val log = LoggerFactory.getLogger(getClass.getName)
   def getNewDict(name: String): DsalPDotPageIndexDict = name match {
     case "turner" => new DsalPDotPageIndexDictWithDiv2Items(name = name, browser = browser)
     case "date" => new DsalPDotPageIndexDictWithDiv1Items(name = name, browser = browser)
     case "bahri" => new DsalPDotPageIndexDictWithBrSeparatedItems(name = name, browser = browser)
     case "praharaj" => new DsalPDotPageIndexDictWithDiv1SeparatedItems(name = name, browser = browser)
+    case "molesworth" => new DsalPDotPageIndexDictWithDiv1SeparatedItems(name = name, browser = browser)
+    case "vaze" => new DsalPDotPageIndexDictWithDiv2Items(name = name, browser = browser)
   }
 }
