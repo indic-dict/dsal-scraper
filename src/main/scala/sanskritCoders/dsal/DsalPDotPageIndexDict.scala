@@ -101,7 +101,7 @@ class DsalPDotPageIndexDictWithDiv1Items(name: String, browser: JsoupBrowser) ex
   }
 }
 
-class DsalPDotPageIndexDictWithHwSiblingItems(name: String, browser: JsoupBrowser) extends DsalPDotPageIndexDict(name=name, browser = browser){
+class DsalPDotPageIndexDictWithBrSeparatedItems(name: String, browser: JsoupBrowser) extends DsalPDotPageIndexDict(name=name, browser = browser){
   private val log = LoggerFactory.getLogger(getClass.getName)
 
   override def getItems(pageUrl: String): Seq[DsalDictItem] = {
@@ -119,12 +119,31 @@ class DsalPDotPageIndexDictWithHwSiblingItems(name: String, browser: JsoupBrowse
   }
 }
 
+class DsalPDotPageIndexDictWithDiv1SeparatedItems(name: String, browser: JsoupBrowser) extends DsalPDotPageIndexDict(name=name, browser = browser){
+  private val log = LoggerFactory.getLogger(getClass.getName)
+
+  override def getItems(pageUrl: String): Seq[DsalDictItem] = {
+    val doc = browser.get(url = pageUrl)
+    log.info(s"Read $pageUrl")
+    val itemElements = doc.underlying.html().split("<div1>").tail.map(x => {Jsoup.parse(x)})
+    itemElements.map(element => {
+      val headwords = Seq(element.getElementsByAttributeValue("class", "head").asScala.head.text())
+      element.getElementsByTag("table").asScala.foreach(_.remove())
+      element.getElementsByTag("div").asScala.foreach(_.remove())
+      val entry = element.text()
+      val item = new DsalDictItem(headwords = headwords, entry = entry)
+      item
+    })
+  }
+}
+
 object DsalPDotPageIndexDict {
   val browser: JsoupBrowser = JsoupBrowser.typed()
   private val log = LoggerFactory.getLogger(getClass.getName)
   def getNewDict(name: String): DsalPDotPageIndexDict = name match {
     case "turner" => new DsalPDotPageIndexDictWithDiv2Items(name = name, browser = browser)
     case "date" => new DsalPDotPageIndexDictWithDiv1Items(name = name, browser = browser)
-    case "bahri" => new DsalPDotPageIndexDictWithHwSiblingItems(name = name, browser = browser)
+    case "bahri" => new DsalPDotPageIndexDictWithBrSeparatedItems(name = name, browser = browser)
+    case "praharaj" => new DsalPDotPageIndexDictWithDiv1SeparatedItems(name = name, browser = browser)
   }
 }
