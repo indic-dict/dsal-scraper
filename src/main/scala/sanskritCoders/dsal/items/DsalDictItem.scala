@@ -1,13 +1,26 @@
 package sanskritCoders.dsal.items
 
+import java.io.PrintWriter
+
 import net.ruippeixotog.scalascraper.browser.JsoupBrowser
 import org.jsoup.nodes.{Element, TextNode}
 import org.slf4j.{Logger, LoggerFactory}
 import sanskritCoders.dsal.items.marathi.{BernstenDictItem, DateDictItem}
+
 import scala.collection.JavaConverters._
 
 case class DsalDictItem(var headwords: Seq[String] = Seq(), var entry: String = "") {
   protected val log: Logger = LoggerFactory.getLogger(getClass.getName)
+
+  def dump(destination: PrintWriter) = {
+    if (this.headwords.nonEmpty) {
+      val headersLine = this.headwords.mkString("|")
+      val meaningLine = this.getMeaningLine
+      destination.println(headersLine)
+      destination.println(meaningLine)
+      destination.println("")
+    }
+  }
 
 
   def fromUrl(url: String, browser: JsoupBrowser, pageTitle: Option[String] = None): Unit = {

@@ -53,18 +53,12 @@ class DsalPLinkedPageDict(name: String, browser: JsoupBrowser) {
     outFileObj.getParentFile.mkdirs()
     val destination = new PrintWriter(new FileWriter(outFileObj, nextPageIndexIn > 0))
     var nextPageIndex = nextPageIndexIn
-    val pages = getPages.take(nextPageIndex)
+    val pages = getPages.drop(nextPageIndex-1)
     val progressBar = new ProgressBar("itemsPb", pages.length)
     progressBar.start()
     try{
-      pages.map(getItems).flatten.foreach(item => {
-        if (item.headwords.nonEmpty) {
-          val headersLine = item.headwords.mkString("|")
-          val meaningLine = item.getMeaningLine
-          destination.println(headersLine)
-          destination.println(meaningLine)
-          destination.println("")
-        }
+      pages.map(getItems).foreach(items => {
+        items.foreach(_.dump(destination = destination))
         nextPageIndex = nextPageIndex + 1
         progressBar.step()
       })

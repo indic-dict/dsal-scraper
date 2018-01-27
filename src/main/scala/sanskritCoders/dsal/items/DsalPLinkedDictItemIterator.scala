@@ -51,13 +51,7 @@ class DsalPLinkedDictItemIterator(name: String, browser: JsoupBrowser) extends I
     progressBar.start()
     try{
       this.foreach(item => {
-        if (item.headwords.nonEmpty) {
-          val headersLine = item.headwords.mkString("|")
-          val meaningLine = item.getMeaningLine
-          destination.println(headersLine)
-          destination.println(meaningLine)
-          destination.println("")
-        }
+        item.dump(destination = destination)
         nextItemIndex = nextItemIndex + 1
         progressBar.step()
       })
