@@ -151,5 +151,6 @@ object DsalPDotPageIndexDict {
     case "praharaj" => new DsalPDotPageIndexDictWithDiv1SeparatedItems(name = name, browser = browser)
     case "molesworth" => new DsalPDotPageIndexDictWithDiv1SeparatedItems(name = name, browser = browser)
     case "vaze" => new DsalPDotPageIndexDictWithDiv2Items(name = name, browser = browser)
+    case "caturvedi" => new DsalPDotPageIndexDictWithDiv2Items(name = name, browser = browser)
   }
 }

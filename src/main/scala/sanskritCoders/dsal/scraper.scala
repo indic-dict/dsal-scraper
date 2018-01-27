@@ -55,8 +55,9 @@ object scraper {
 //    dumpDictWithPLinkedIndex(name = "bahri")
 //    dumpDictWithPLinkedIndex(name = "praharaj")
 //    dumpDictWithPLinkedIndex(name = "molesworth")
-    dumpDictWithPLinkedIndex(name = "vaze")
-    //    dumpDictWithPLinkedIndex(name = "caturvedi")
+//    dumpDictWithPLinkedIndex(name = "vaze")
+//        dumpDictWithPLinkedIndex(name = "caturvedi")
+    // TODO: get the below
     //    dumpDictWithPLinkedIndex(name = "fallon")
     //    dumpDictWithPLinkedIndex(name = "platts")
     //    dumpDictWithPLinkedIndex(name = "shakespear")
