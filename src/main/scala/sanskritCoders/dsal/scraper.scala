@@ -63,7 +63,8 @@ object scraper {
     //        dumpDictWithPLinkedIndex(name = "caturvedi")
     //            dumpDictWithPLinkedIndex(name = "gundert")
 //    dumpDictWithPLinkedIndex(name = "candrakanta")
-    dumpDictWithPLinkedIndex(name = "singh")
+//    dumpDictWithPLinkedIndex(name = "singh")
+    dumpDictWithPLinkedIndex(name = "carter")
     // TODO: get the below
     //    dumpDictWithPLinkedIndex(name = "fallon")
     //    dumpDictWithPLinkedIndex(name = "platts")

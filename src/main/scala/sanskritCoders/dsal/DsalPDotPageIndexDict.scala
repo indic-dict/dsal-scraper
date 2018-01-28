@@ -155,5 +155,6 @@ object DsalPDotPageIndexDict {
     case "caturvedi" => new DsalPDotPageIndexDictWithDiv2Items(name = name, browser = browser)
     case "singh" => new DsalPDotPageIndexDictWithDiv2Items(name = name, browser = browser, headwordPosition = 1)
     case "candrakanta" => new DsalPDotPageIndexDictWithDiv2Items(name = name, browser = browser, headwordPosition = 0)
+    case "carter" => new DsalPDotPageIndexDictWithDiv2Items(name = name, browser = browser, headwordPosition = 0)
   }
 }
