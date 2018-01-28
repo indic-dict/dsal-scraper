@@ -32,7 +32,7 @@ case class DsalDictItem(var headwords: Seq[String] = Seq(), var entry: String = 
     entry = article.map(_.text()).getOrElse("")
   }
 
-  def fromDiv2Element(element: Element): Unit = {
+  def fromDiv2Element(element: Element, headwordPosition: Int = 0): Unit = {
     /*
     <div2 type="article" id="अ_a">
 <span class="head"><span class="hi">अ a</span></span>
@@ -40,7 +40,9 @@ case class DsalDictItem(var headwords: Seq[String] = Seq(), var entry: String = 
 
 </div2>
      */
-    headwords = Seq(element.attr("id").split("_").toList.head)
+    headwords = Seq(element.attr("id").split("_").toList(headwordPosition))
+    val div2Children = element.children().asScala.filter(child => child.tagName() == "div2")
+    div2Children.foreach(_.remove())
     entry = element.text()
 //    entry = element.textNodes().asScala.map(_.text()).mkString(" ")
 //    log.debug(element.textNodes().toString)

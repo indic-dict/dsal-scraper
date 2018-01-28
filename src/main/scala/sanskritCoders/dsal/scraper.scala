@@ -16,6 +16,8 @@ object scraper {
     ("assamese", "english") -> "/home/vvasuki/stardict-assamese/as-head/en-entries/",
     ("telugu", "english") -> "/home/vvasuki/stardict-telugu/te-head/en-entries/",
     ("persian", "english") -> "/home/vvasuki/stardict-persian/te-head/en-entries/",
+    ("malayalam", "english") -> "/home/vvasuki/stardict-malayalam/ml-head/en-entries/",
+    ("panjabi", "english") -> "/home/vvasuki/stardict-panjabi/pa-head/en-entries/",
     ("oriya", "english") -> "/home/vvasuki/stardict-oriya/or-head/"
   )
   private val dictsToLanguagePair = Map(
@@ -33,6 +35,8 @@ object scraper {
     "praharaj" -> ("oriya", "english"),
     "grierson" -> ("kashmiri", "english"),
     "candrakanta" -> ("assamese", "english"),
+    "singh" -> ("panjabi", "english"),
+    "gundert" -> ("malayalam", "english"),
     "gwynn" -> ("telugu", "english"),
     "hayyim" -> ("persian", "english"),
     "steingass" -> ("persian", "english"),
@@ -56,7 +60,10 @@ object scraper {
 //    dumpDictWithPLinkedIndex(name = "praharaj")
 //    dumpDictWithPLinkedIndex(name = "molesworth")
 //    dumpDictWithPLinkedIndex(name = "vaze")
-//        dumpDictWithPLinkedIndex(name = "caturvedi")
+    //        dumpDictWithPLinkedIndex(name = "caturvedi")
+    //            dumpDictWithPLinkedIndex(name = "gundert")
+//    dumpDictWithPLinkedIndex(name = "candrakanta")
+    dumpDictWithPLinkedIndex(name = "singh")
     // TODO: get the below
     //    dumpDictWithPLinkedIndex(name = "fallon")
     //    dumpDictWithPLinkedIndex(name = "platts")

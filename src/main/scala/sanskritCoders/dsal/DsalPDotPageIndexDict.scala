@@ -58,7 +58,7 @@ abstract class DsalPDotPageIndexDict(name: String, browser: JsoupBrowser) {
   }
 }
 
-class DsalPDotPageIndexDictWithDiv2Items(name: String, browser: JsoupBrowser) extends DsalPDotPageIndexDict(name=name, browser = browser){
+class DsalPDotPageIndexDictWithDiv2Items(name: String, browser: JsoupBrowser, headwordPosition: Int = 0) extends DsalPDotPageIndexDict(name=name, browser = browser){
   private val log = LoggerFactory.getLogger(getClass.getName)
 
   override def getItems(pageUrl: String): Seq[DsalDictItem] = {
@@ -78,7 +78,7 @@ class DsalPDotPageIndexDictWithDiv2Items(name: String, browser: JsoupBrowser) ex
 */
     itemElements.map(element => {
       val item = new DsalDictItem()
-      item.fromDiv2Element(element)
+      item.fromDiv2Element(element, headwordPosition = headwordPosition)
       item
     })
   }
@@ -146,11 +146,14 @@ object DsalPDotPageIndexDict {
   private val log = LoggerFactory.getLogger(getClass.getName)
   def getNewDict(name: String): DsalPDotPageIndexDict = name match {
     case "turner" => new DsalPDotPageIndexDictWithDiv2Items(name = name, browser = browser)
+    case "gundert" => new DsalPDotPageIndexDictWithDiv2Items(name = name, browser = browser)
     case "date" => new DsalPDotPageIndexDictWithDiv1Items(name = name, browser = browser)
     case "bahri" => new DsalPDotPageIndexDictWithBrSeparatedItems(name = name, browser = browser)
     case "praharaj" => new DsalPDotPageIndexDictWithDiv1SeparatedItems(name = name, browser = browser)
     case "molesworth" => new DsalPDotPageIndexDictWithDiv1SeparatedItems(name = name, browser = browser)
     case "vaze" => new DsalPDotPageIndexDictWithDiv2Items(name = name, browser = browser)
     case "caturvedi" => new DsalPDotPageIndexDictWithDiv2Items(name = name, browser = browser)
+    case "singh" => new DsalPDotPageIndexDictWithDiv2Items(name = name, browser = browser, headwordPosition = 1)
+    case "candrakanta" => new DsalPDotPageIndexDictWithDiv2Items(name = name, browser = browser, headwordPosition = 0)
   }
 }
