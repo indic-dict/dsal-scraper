@@ -1,6 +1,6 @@
 name := "dsal-scraper"
 
-scalaVersion := "2.12.3"
+scalaVersion := "2.12.7"
 
 resolvers += Resolver.sonatypeRepo("releases")
 resolvers += Resolver.sonatypeRepo("snapshots")

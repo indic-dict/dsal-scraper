@@ -18,6 +18,8 @@ object scraper {
     ("persian", "english") -> "/home/vvasuki/stardict-persian/te-head/en-entries/",
     ("malayalam", "english") -> "/home/vvasuki/stardict-malayalam/ml-head/en-entries/",
     ("panjabi", "english") -> "/home/vvasuki/stardict-panjabi/pa-head/en-entries/",
+    ("bengali", "english") -> "/home/vvasuki/stardict-bengali/bn-head/en-entries/",
+    ("bengali", "bengali") -> "/home/vvasuki/stardict-bengali/bn-head/bn-entries/",
     ("oriya", "english") -> "/home/vvasuki/stardict-oriya/or-head/"
   )
   private val dictsToLanguagePair = Map(
@@ -40,6 +42,7 @@ object scraper {
     "gwynn" -> ("telugu", "english"),
     "hayyim" -> ("persian", "english"),
     "steingass" -> ("persian", "english"),
+    "biswas-bengali" -> ("bengali", "english"),
     "carter" -> ("sinhala", "english")
   )
 
