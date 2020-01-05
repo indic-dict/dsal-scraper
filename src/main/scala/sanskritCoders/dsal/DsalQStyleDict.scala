@@ -8,11 +8,11 @@ import org.slf4j.LoggerFactory
 import sanskritCoders.dsal.items.DsalDictItem
 
 
-// TODO: Parse pages like http://dsalsrv02.uchicago.edu/cgi-bin/app/schmidt_query.py?display=utf8def&page=2
-// Or if roman utf definitions are preferred: 
-// https://dsalsrv04.uchicago.edu/cgi-bin/app/biswas-bengali_query.py?page=477&display=romutfdef
-
 case class DsalQStyleDict(name: String, browser: JsoupBrowser, entryEncoding:String="romutfdef")  {
+  // The class for dicts where we need to parse pages like http://dsalsrv02.uchicago.edu/cgi-bin/app/schmidt_query.py?display=utf8def&page=2
+  // Or if roman utf definitions are preferred: 
+  // https://dsalsrv04.uchicago.edu/cgi-bin/app/biswas-bengali_query.py?page=477&display=romutfdef
+
   private val log = LoggerFactory.getLogger(getClass.getName)
   private val pageUrlBase = s"https://dsalsrv04.uchicago.edu/cgi-bin/app/${name}_query.py?display=${entryEncoding}&page="
   
