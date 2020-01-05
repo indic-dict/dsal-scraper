@@ -59,6 +59,11 @@ case class DsalDictItem(var headwords: Seq[String] = Seq(), var entry: String = 
     entry = element.text()
   }
 
+  def fromPageDivElement(elementIn: Element): Unit = {
+    val element = elementIn.clone()
+    headwords = Seq(element.getElementsByTag("span").asScala.head.text().replaceAll("[0-9]", ""))
+    entry = element.text()
+  }
 
   def getMeaningLine: String = entry.replace("\n", "<BR>")
 }

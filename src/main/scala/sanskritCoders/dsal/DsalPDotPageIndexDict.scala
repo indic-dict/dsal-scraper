@@ -28,16 +28,16 @@ abstract class DsalPDotPageIndexDict(name: String, browser: JsoupBrowser) {
     itemPageUrls
   }
 
-  def getItems(pageUrl: String): Seq[DsalDictItem]
+  def getItemsFromPage(pageUrl: String): Seq[DsalDictItem]
 
-  def dump(outfileStr:String, nextPageIndexIn: Int  = 0): Unit = {
+  def dump(outfileStr:String, startPageIndex: Int  = 0): Unit = {
     val outFileObj = new File(outfileStr)
     outFileObj.getParentFile.mkdirs()
-    val destination = new PrintWriter(new FileWriter(outFileObj, nextPageIndexIn > 0))
-    var nextPageIndex = nextPageIndexIn
+    val destination = new PrintWriter(new FileWriter(outFileObj, startPageIndex > 0))
+    var nextPageIndex = startPageIndex
     val pages = getPages.drop(nextPageIndex-1)
     try{
-      pages.map(getItems).foreach(items => {
+      pages.map(getItemsFromPage).foreach(items => {
         items.foreach(_.dump(destination = destination))
         nextPageIndex = nextPageIndex + 1
       })
@@ -61,7 +61,7 @@ abstract class DsalPDotPageIndexDict(name: String, browser: JsoupBrowser) {
 class DsalPDotPageIndexDictWithDiv2Items(name: String, browser: JsoupBrowser, headwordPosition: Int = 0) extends DsalPDotPageIndexDict(name=name, browser = browser){
   private val log = LoggerFactory.getLogger(getClass.getName)
 
-  override def getItems(pageUrl: String): Seq[DsalDictItem] = {
+  override def getItemsFromPage(pageUrl: String): Seq[DsalDictItem] = {
     val doc = browser.get(url = pageUrl)
     log.info(s"Read $pageUrl")
     val itemElements = doc.underlying.getElementsByAttributeValueContaining("type", "article").toArray().map(_.asInstanceOf[Element])
@@ -89,7 +89,7 @@ class DsalPDotPageIndexDictWithDiv2Items(name: String, browser: JsoupBrowser, he
 class DsalPDotPageIndexDictWithDiv1Items(name: String, browser: JsoupBrowser) extends DsalPDotPageIndexDict(name=name, browser = browser){
   private val log = LoggerFactory.getLogger(getClass.getName)
 
-  override def getItems(pageUrl: String): Seq[DsalDictItem] = {
+  override def getItemsFromPage(pageUrl: String): Seq[DsalDictItem] = {
     val doc = browser.get(url = pageUrl)
     log.info(s"Read $pageUrl")
     val itemElements = doc.underlying.getElementsByTag("div1").toArray().map(_.asInstanceOf[Element])
@@ -104,7 +104,7 @@ class DsalPDotPageIndexDictWithDiv1Items(name: String, browser: JsoupBrowser) ex
 class DsalPDotPageIndexDictWithBrSeparatedItems(name: String, browser: JsoupBrowser) extends DsalPDotPageIndexDict(name=name, browser = browser){
   private val log = LoggerFactory.getLogger(getClass.getName)
 
-  override def getItems(pageUrl: String): Seq[DsalDictItem] = {
+  override def getItemsFromPage(pageUrl: String): Seq[DsalDictItem] = {
     val doc = browser.get(url = pageUrl)
     log.info(s"Read $pageUrl")
     val itemElements = doc.underlying.html().split("<br>").tail.map(x => {Jsoup.parse(x)})
@@ -122,7 +122,7 @@ class DsalPDotPageIndexDictWithBrSeparatedItems(name: String, browser: JsoupBrow
 class DsalPDotPageIndexDictWithDiv1SeparatedItems(name: String, browser: JsoupBrowser) extends DsalPDotPageIndexDict(name=name, browser = browser){
   private val log = LoggerFactory.getLogger(getClass.getName)
 
-  override def getItems(pageUrl: String): Seq[DsalDictItem] = {
+  override def getItemsFromPage(pageUrl: String): Seq[DsalDictItem] = {
     val doc = browser.get(url = pageUrl)
     log.info(s"Read $pageUrl")
     val itemElements = doc.underlying.html().split("<div1>").tail.map(x => {Jsoup.parse(x)})
