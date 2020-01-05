@@ -14,7 +14,7 @@ import sanskritCoders.dsal.items.DsalDictItem
 
 case class DsalQStyleDict(name: String, browser: JsoupBrowser, entryEncoding:String="romutfdef")  {
   private val log = LoggerFactory.getLogger(getClass.getName)
-  private val pageUrlBase = s"https://dsalsrv04.uchicago.edu/cgi-bin/app/biswas-bengali_query.py?display=${entryEncoding}&page="
+  private val pageUrlBase = s"https://dsalsrv04.uchicago.edu/cgi-bin/app/${name}_query.py?display=${entryEncoding}&page="
   
   def getItemsFromPage(pageUrl: String): (Seq[DsalDictItem], Option[String]) = {
     val doc = browser.get(url = pageUrl)

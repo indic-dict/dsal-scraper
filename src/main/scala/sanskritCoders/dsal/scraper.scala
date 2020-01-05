@@ -44,6 +44,7 @@ object scraper {
     "hayyim" -> ("persian", "english"),
     "steingass" -> ("persian", "english"),
     "biswas-bengali" -> ("bengali", "english"),
+    "biswas-bangala" -> ("bengali", "bengali"),
     "carter" -> ("sinhala", "english")
   )
 
@@ -61,16 +62,14 @@ object scraper {
         super.defaultRequestSettings(conn).timeout(5 * 60 * 1000 /* 5 min*/)
       }
     }
-    val outfilePath = languageToPath(dictsToLanguagePair(name))
+    val languagePair = dictsToLanguagePair(name)
+    val outfilePath = languageToPath(languagePair)
     //    dict.setItems(limit = Some(5))
     val outfileStr = s"$outfilePath/$name/$name.babylon"
-    val dict = DsalQStyleDict(name=name, browser=browser)
+    val entryEncoding:String = if (languagePair._2 == "english") "romutfdef" else "utf8def"
+    val dict = DsalQStyleDict(name=name, browser=browser, entryEncoding=entryEncoding)
     dict.dump(outfileStr = outfileStr, startPageIndex=startPageIndex)
   }
-
-  // TODO: Parse pages like http://dsalsrv02.uchicago.edu/cgi-bin/app/schmidt_query.py?display=utf8def&page=2
-  // Or if roman utf definitions are preferred: 
-  // https://dsalsrv04.uchicago.edu/cgi-bin/app/biswas-bengali_query.py?page=477&display=romutfdef
 
   def main(args: Array[String]): Unit = {
 //    dumpDictWithPLinkedIndex(name = "date")
@@ -84,10 +83,11 @@ object scraper {
 //    dumpDictWithPLinkedIndex(name = "candrakanta")
 //    dumpDictWithPLinkedIndex(name = "singh")
 //    dumpDictWithPLinkedIndex(name = "carter")
-    dumpQStyleDict(name="biswas-bengali")
+//    dumpQStyleDict(name="biswas-bangala")
     // TODO: get the below
-    //    dumpDictWithPLinkedIndex(name = "fallon")
-    //    dumpDictWithPLinkedIndex(name = "platts")
-    //    dumpDictWithPLinkedIndex(name = "shakespear")
+    //    dumpQStyleDict(name="schmidt") // nepali devanAgarI, needs new parser.
+//        dumpDictWithPLinkedIndex(name = "fallon") // Urdu and IAST script headwords
+//        dumpDictWithPLinkedIndex(name = "platts") // Urdu and IAST script headwords  (sometimes devanAgarI roots too) 
+    //    dumpDictWithPLinkedIndex(name = "shakespear") // Urdu and IAST script headwords  (sometimes devanAgarI roots too) 
   }
 }
