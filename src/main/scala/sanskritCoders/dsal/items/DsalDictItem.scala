@@ -1,7 +1,6 @@
 package sanskritCoders.dsal.items
 
-import java.io.PrintWriter
-
+import java.io.{PrintWriter, StringWriter}
 import net.ruippeixotog.scalascraper.browser.JsoupBrowser
 import org.jsoup.nodes.{Element, TextNode}
 import org.slf4j.{Logger, LoggerFactory}
@@ -59,10 +58,27 @@ case class DsalDictItem(var headwords: Seq[String] = Seq(), var entry: String = 
     entry = element.text()
   }
 
-  def fromPageDivElement(elementIn: Element): Unit = {
+  def fromPageDivElement(elementIn: Element, dictName: Option[String] = None, hwTags: Seq[String] = Seq("hw")): Unit = {
     val element = elementIn.clone()
-    headwords = Seq(element.getElementsByTag("span").asScala.head.text().replaceAll("[0-9]", ""))
-    entry = element.text()
+    var headwordElements = element.getElementsByTag(hwTags.head).asScala
+    hwTags.tail.foreach(hwTag => {
+      try {
+        headwordElements = headwordElements.map(x => x.getElementsByTag(hwTag).asScala.head)
+      } catch {
+        case ex: NoSuchElementException => {
+          val sw = new StringWriter
+          ex.printStackTrace(new PrintWriter(sw))
+          log.error(hwTag)
+          log.error(sw.toString)
+          throw ex
+        } 
+      }
+    })
+    headwords = headwordElements.map(x => x.text().replaceAll("[0-9॒॑]", ""))
+    if(dictName.getOrElse("") == "grierson") {
+      headwords = headwords.map(x => x.split("।")).flatten
+    }
+    entry = element.text().replaceAll(" ", "")
   }
 
   def getMeaningLine: String = entry.replace("\n", "<BR>")
