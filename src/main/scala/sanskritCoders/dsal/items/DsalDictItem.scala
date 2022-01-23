@@ -7,6 +7,7 @@ import org.slf4j.{Logger, LoggerFactory}
 import sanskritCoders.dsal.items.marathi.{BernstenDictItem, DateDictItem}
 
 import scala.collection.JavaConverters._
+import scala.collection.mutable
 
 case class DsalDictItem(var headwords: Seq[String] = Seq(), var entry: String = "") {
   protected val log: Logger = LoggerFactory.getLogger(getClass.getName)
@@ -60,18 +61,23 @@ case class DsalDictItem(var headwords: Seq[String] = Seq(), var entry: String = 
 
   def fromPageDivElement(elementIn: Element, dictName: Option[String] = None, hwTags: Seq[String] = Seq("hw")): Unit = {
     val element = elementIn.clone()
-    var headwordElements = element.getElementsByTag(hwTags.head).asScala
-    hwTags.tail.foreach(hwTag => {
-      try {
-        headwordElements = headwordElements.map(x => x.getElementsByTag(hwTag).asScala.head)
-      } catch {
-        case ex: NoSuchElementException => {
-          val sw = new StringWriter
-          ex.printStackTrace(new PrintWriter(sw))
-          log.error(hwTag)
-          log.error(sw.toString)
-          throw ex
-        } 
+    var headwordElements = Seq(element)
+    hwTags.foreach(hwTag => {
+      val subElements = mutable.ArrayBuffer.empty[Element]
+      hwTag.split(",").foreach(tag => {
+        try {
+          subElements.appendAll(headwordElements.map(x => x.getElementsByTag(tag).asScala.head))
+        } catch {
+          case ex: NoSuchElementException => {
+          }
+        }
+      })
+      if(subElements.isEmpty) {
+        log.error(hwTag)
+        log.error(dictName.get)
+        throw new NoSuchElementException(hwTag)
+      } else {
+        headwordElements = subElements
       }
     })
     headwords = headwordElements.map(x => x.text().replaceAll("[0-9॒॑]", ""))

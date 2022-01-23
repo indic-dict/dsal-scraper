@@ -24,7 +24,7 @@ case class DsalQStyleDict(name: String, browser: JsoupBrowser, entryEncoding:Str
     if (doc.toHtml.contains("Digital version of the dictionary has content for page")) {
       return (Seq(), nextPageIdOpt, 0)
     }
-    val itemElements = doc.underlying.getElementsByTag(hwTags.head).toArray().map(_.asInstanceOf[Element]).map(_.parent())
+    val itemElements = doc.underlying.getElementsByTag(hwTags.head.split(",").head).toArray().map(_.asInstanceOf[Element]).map(_.parent())
 
     val items = itemElements.map(element => {
       val item = new DsalDictItem()

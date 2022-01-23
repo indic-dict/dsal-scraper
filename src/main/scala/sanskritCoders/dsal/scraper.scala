@@ -8,28 +8,29 @@ object scraper {
   //noinspection ScalaUnusedSymbol
   private val log = LoggerFactory.getLogger(getClass.getName)
   private val languageToPath = Map(
-    ("telugu", "english") -> "/home/vvasuki/indic-dict/stardict-telugu/te-head/en-entries/",
-    ("kannada", "english") -> "/home/vvasuki/indic-dict/stardict-kannada/kn-head/en-entries/",
-    ("tamil", "english") -> "/home/vvasuki/indic-dict/stardict-tamil/ta-head/en-entries/",
-    ("tamil", "tamil") -> "/home/vvasuki/indic-dict/stardict-tamil/ta-head/ta-entries/",
-    ("marathi", "english") -> "/home/vvasuki/indic-dict/stardict-marathi/ma-head/other-entries/",
-    ("marathi", "marathi") -> "/home/vvasuki/indic-dict/stardict-marathi/ma-head/ma-entries/",
-    ("nepali", "english") -> "/home/vvasuki/indic-dict/stardict-nepali/ne-head/en-entries/",
-    ("hindi", "english") -> "/home/vvasuki/indic-dict/stardict-hindi/hi-head/en-entries/",
-    ("prakrit", "hindi") -> "/home/vvasuki/indic-dict/stardict-prakrit/prakrit-head/hi-entries/",
-    ("sinhala", "english") -> "/home/vvasuki/indic-dict/stardict-sinhala/si-head/en-entries/",
-    ("kashmiri", "english") -> "/home/vvasuki/indic-dict/stardict-kashmiri/ks-head/en-entries/",
-    ("assamese", "english") -> "/home/vvasuki/indic-dict/stardict-assamese/as-head/en-entries/",
-    ("persian", "english") -> "/home/vvasuki/indic-dict/stardict-persian/te-head/en-entries/",
-    ("malayalam", "english") -> "/home/vvasuki/indic-dict/stardict-malayalam/ml-head/en-entries/",
-    ("panjabi", "english") -> "/home/vvasuki/indic-dict/stardict-panjabi/pa-head/en-entries/",
-    ("bengali", "english") -> "/home/vvasuki/indic-dict/stardict-bengali/bn-head/en-entries/",
-    ("bengali", "bengali") -> "/home/vvasuki/indic-dict/stardict-bengali/bn-head/bn-entries/",
-    ("oriya", "english") -> "/home/vvasuki/indic-dict/stardict-oriya/or-head/",
-    ("divehi", "english") -> "/home/vvasuki/indic-dict/stardict-divehi/dv-head/en-entries/",
-    ("lushai", "english") -> "/home/vvasuki/indic-dict/stardict-lushai/lushai-head/en-entries/",
-    ("manipuri", "english") -> "/home/vvasuki/indic-dict/stardict-manipuri/manipuri-head/en-entries/",
-    ("rajasthani", "english") -> "/home/vvasuki/indic-dict/stardict-rajasthani/rajasthani-head/en-entries/",
+    ("telugu", "english") -> "/home/vvasuki/indic-dict/stardict_all/stardict-telugu/te-head/en-entries/",
+    ("kannada", "english") -> "/home/vvasuki/indic-dict/stardict_all/stardict-kannada/kn-head/en-entries/",
+    ("tamil", "english") -> "/home/vvasuki/indic-dict/stardict_all/stardict-tamil/ta-head/en-entries/",
+    ("tamil", "tamil") -> "/home/vvasuki/indic-dict/stardict_all/stardict-tamil/ta-head/ta-entries/",
+    ("marathi", "english") -> "/home/vvasuki/indic-dict/stardict_all/stardict-marathi/ma-head/other-entries/",
+    ("marathi", "marathi") -> "/home/vvasuki/indic-dict/stardict_all/stardict-marathi/ma-head/ma-entries/",
+    ("nepali", "english") -> "/home/vvasuki/indic-dict/stardict_all/stardict-nepali/ne-head/en-entries/",
+    ("hindi", "english") -> "/home/vvasuki/indic-dict/stardict_all/stardict-hindi/hi-head/en-entries/",
+    ("prakrit", "hindi") -> "/home/vvasuki/indic-dict/stardict_all/stardict-prakrit/prakrit-head/hi-entries/",
+    ("sinhala", "english") -> "/home/vvasuki/indic-dict/stardict_all/stardict-sinhala/si-head/en-entries/",
+    ("kashmiri", "english") -> "/home/vvasuki/indic-dict/stardict_all/stardict-kashmiri/ks-head/en-entries/",
+    ("assamese", "english") -> "/home/vvasuki/indic-dict/stardict_all/stardict-assamese/as-head/en-entries/",
+    ("persian", "english") -> "/home/vvasuki/indic-dict/stardict_all/stardict-persian/te-head/en-entries/",
+    ("malayalam", "english") -> "/home/vvasuki/indic-dict/stardict_all/stardict-malayalam/ml-head/en-entries/",
+    ("panjabi", "english") -> "/home/vvasuki/indic-dict/stardict_all/stardict-panjabi/pa-head/en-entries/",
+    ("bengali", "english") -> "/home/vvasuki/indic-dict/stardict_all/stardict-bengali/bn-head/en-entries/",
+    ("bengali", "bengali") -> "/home/vvasuki/indic-dict/stardict_all/stardict-bengali/bn-head/bn-entries/",
+    ("oriya", "english") -> "/home/vvasuki/indic-dict/stardict_all/stardict-oriya/or-head/",
+    ("divehi", "english") -> "/home/vvasuki/indic-dict/stardict_all/stardict-divehi/dv-head/en-entries/",
+    ("lushai", "english") -> "/home/vvasuki/indic-dict/stardict_all/stardict-lushai/lushai-head/en-entries/",
+    ("manipuri", "english") -> "/home/vvasuki/indic-dict/stardict_all/stardict-manipuri/manipuri-head/en-entries/",
+    ("rajasthani", "english") -> "/home/vvasuki/indic-dict/stardict_all/stardict-rajasthani/rajasthani-head/en-entries/",
+    ("urdu", "english") -> "/home/vvasuki/indic-dict/stardict_all/stardict-urdu/ur-head/en-entries/",
   )
   private val dictsToLanguagePair = Map(
     "berntsen" -> ("marathi", "english"),
@@ -41,9 +42,10 @@ object scraper {
     "turner" -> ("nepali", "english"),
     "bahri" -> ("hindi", "english"),
     "caturvedi" -> ("hindi", "english"),
-    "fallon" -> ("hindi", "english"),
-    "platts" -> ("hindi", "english"),
-    "shakespear" -> ("hindi", "english"),
+    "fallon" -> ("urdu", "english"),
+    "platts" -> ("urdu", "english"),
+    "shakespear" -> ("urdu", "english"),
+    "qureshi" -> ("urdu", "english"),
     "praharaj" -> ("oriya", "english"),
     "grierson" -> ("kashmiri", "english"),
     "candrakanta" -> ("assamese", "english"),
@@ -110,24 +112,23 @@ object scraper {
 //        dumpQStyleDict(name="maniku")
 //        dumpQStyleDict(name="dasa")
 //        dumpQStyleDict(name="bhattacharya")
-//        dumpQStyleDict(name="grierson", hwTags = Seq("p1", "d"))
+//        dumpQStyleDict(name="grierson", hwTags = Seq("p1", "d")) // TODO:Skipping latin only headwords
 //        dumpQStyleDict(name="tulpule")
 //        dumpQStyleDict(name="brown")
 //        dumpQStyleDict(name="crea")
 //        dumpQStyleDict(name="winslow")
-//            dumpQStyleDict(name="platts", hwTags = Seq("hw", "d")) // TODO:Skipping urdu headwords
-
     //    dumpDictWithPLinkedIndex(name = "candrakanta")
     //    dumpQStyleDict(name="biswas-bangala")
 //        dumpQStyleDict(name="mcalpin", hwTags = Seq("hw", "tam"))
-    
+//    dumpQStyleDict(name="platts", hwTags = Seq("hw", "d,pa"))
+//    dumpQStyleDict(name = "shakespear", hwTags = Seq("hi"))// Urdu and IAST  
+//    dumpQStyleDict(name = "qureshi", hwTags = Seq("hw", "u"))// Urdu and IAST  
+    dumpQStyleDict(name = "fallon", hwTags = Seq("pa,d")) // Urdu devanagari and IAST script headwords
+       
     // TODO: get the below
     //    dumpQStyleDict(name="sharma")
     //    dumpQStyleDict(name="macalister")
 //    dumpQStyleDict(name="tamil-idioms")
 //    dumpQStyleDict(name="gwynn") // Unusual structure. telugu transliteration needed. https://dsal.uchicago.edu/cgi-bin/app/gwynn_query.py?page=26
-//        dumpDictWithPLinkedIndex(name = "fallon") // Urdu and IAST script headwords
-//        dumpDictWithPLinkedIndex(name = "platts") // Urdu and IAST script headwords  (sometimes devanAgarI roots too) 
-    //    dumpDictWithPLinkedIndex(name = "shakespear") // Urdu and IAST script headwords  (sometimes devanAgarI roots too) 
   }
 }
